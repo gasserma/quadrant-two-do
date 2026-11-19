@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  What moves to a new phone (Android 12+): Google cloud backup and the device-to-device transfer
+  during phone setup. Only the task database goes, with its write-ahead log so recent changes
+  aren't lost. Scheduled-job state and widget state are per-device and are rebuilt on first run.
+-->
+<data-extraction-rules>
+    <cloud-backup>
+        <include domain="database" path="quadranttwodo.db" />
+        <include domain="database" path="quadranttwodo.db-wal" />
+    </cloud-backup>
+    <device-transfer>
+        <include domain="database" path="quadranttwodo.db" />
+        <include domain="database" path="quadranttwodo.db-wal" />
+    </device-transfer>
+</data-extraction-rules>

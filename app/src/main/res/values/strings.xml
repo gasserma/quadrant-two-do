@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Quadrant Two Do</string>
+
+    <!-- Task list -->
+    <string name="list_empty">No tasks yet</string>
+    <string name="action_new_task">New task</string>
+    <string name="more_options">More options</string>
+    <string name="action_log_done_today">Log %s as done today</string>
+    <string name="action_log_selected">Log tasks (done today)</string>
+    <string name="action_delete_selected">Delete tasks</string>
+    <string name="close_selection">Close selection</string>
+    <string name="confirm_log_title">Log tasks</string>
+    <string name="confirm_delete_tasks_title">Delete tasks</string>
+    <plurals name="tasks_selected">
+        <item quantity="one">%d task selected</item>
+        <item quantity="other">%d tasks selected</item>
+    </plurals>
+    <plurals name="confirm_log_prompt">
+        <item quantity="one">Log %d task as done today?</item>
+        <item quantity="other">Log %d tasks as done today?</item>
+    </plurals>
+    <plurals name="confirm_delete_tasks_prompt">
+        <item quantity="one">Delete %d task?</item>
+        <item quantity="other">Delete %d tasks?</item>
+    </plurals>
+    <string name="debug_load_sample">Load sample backup (debug)</string>
+
+    <!-- Import / export (Regularly-compatible backup files) -->
+    <string name="action_import">Import backup…</string>
+    <string name="action_export">Export backup…</string>
+    <string name="import_title">Import backup</string>
+    <string name="import_contains">%1$s contains tasks: %2$d, log entries: %3$d.</string>
+    <string name="import_merge_explain">Merge: tasks that match yours by name keep your settings and gain the backup\'s log entries. Matching tasks: %1$d. New tasks: %2$d. Log entries added: %3$d. Log entries you deleted may come back.</string>
+    <string name="import_replace_explain">Replace all: overwrites everything on this phone with the backup.</string>
+    <plurals name="import_will_skip">
+        <item quantity="one">%d task without a period will be skipped.</item>
+        <item quantity="other">%d tasks without a period will be skipped.</item>
+    </plurals>
+    <string name="import_merged">Merged. New tasks: %1$d. Log entries added: %2$d. Matching tasks: %3$d.</string>
+    <string name="import_replaced">Replaced. Tasks: %1$d. Log entries: %2$d.</string>
+    <plurals name="import_skipped">
+        <item quantity="one">Skipped %d task without a period.</item>
+        <item quantity="other">Skipped %d tasks without a period.</item>
+    </plurals>
+    <string name="import_failed">Import failed</string>
+    <string name="import_not_a_backup">Import failed: that file isn\'t a Quadrant Two Do or Regularly backup</string>
+    <string name="export_done">Exported. Tasks: %1$d. Log entries: %2$d.</string>
+    <string name="export_failed">Export failed</string>
+
+    <!-- Task details -->
+    <string name="title_new_task">New task</string>
+    <string name="title_task">Task details</string>
+    <string name="back">Back</string>
+    <string name="label_name">Name</string>
+    <string name="hint_name">Enter task name</string>
+    <string name="error_name_required">Give the task a name first</string>
+    <string name="label_period">Period</string>
+    <string name="label_next_due">Next due</string>
+    <string name="label_first_due">First due</string>
+    <string name="hint_first_due">Tap to set a first due date</string>
+    <string name="label_last_done">Last done</string>
+    <string name="never">never</string>
+    <string name="label_details">Details</string>
+    <string name="hint_details">Enter task details</string>
+    <string name="action_delete_task">Delete task</string>
+    <string name="confirm_delete_task_title">Delete task</string>
+    <string name="confirm_delete_task_prompt">Delete “%s” and its log?</string>
+    <string name="confirm_discard_prompt">Discard this new task?</string>
+
+    <!-- Period dialog -->
+    <string name="period_dialog_title">Set task period</string>
+    <string name="years">Years</string>
+    <string name="weeks">Weeks</string>
+    <string name="days">Days</string>
+    <plurals name="period_total_days">
+        <item quantity="one">= %d day</item>
+        <item quantity="other">= %d days</item>
+    </plurals>
+    <string name="period_too_short">The period must be at least one day</string>
+
+    <!-- Log -->
+    <string name="label_log">Log</string>
+    <string name="log_empty">No entries yet</string>
+    <string name="action_add_log_entry">Add log entry</string>
+    <string name="add_log_today">Today</string>
+    <string name="add_log_yesterday">Yesterday</string>
+    <string name="add_log_pick_date">Pick a date…</string>
+    <string name="edit_log_entry_title">Edit log entry</string>
+    <string name="label_date">Date</string>
+    <string name="label_note">Note</string>
+    <string name="hint_note">Add a note</string>
+    <string name="action_delete_log_entries">Delete log entries</string>
+    <string name="action_clear_log">Clear task log</string>
+    <string name="confirm_delete_log_entries_title">Delete log entries</string>
+    <string name="confirm_clear_log_title">Clear task log</string>
+    <plurals name="log_entries_selected">
+        <item quantity="one">%d log entry selected</item>
+        <item quantity="other">%d log entries selected</item>
+    </plurals>
+    <plurals name="confirm_delete_log_entries_prompt">
+        <item quantity="one">Delete %d log entry?</item>
+        <item quantity="other">Delete %d log entries?</item>
+    </plurals>
+    <plurals name="confirm_clear_log_prompt">
+        <item quantity="one">Delete %d log entry?</item>
+        <item quantity="other">Delete all %d log entries?</item>
+    </plurals>
+
+    <!-- Widget -->
+    <string name="widget_small_label">Quadrant Two Do (small)</string>
+    <string name="widget_medium_label">Quadrant Two Do</string>
+    <string name="widget_description">Your tasks, most urgent first</string>
+    <string name="widget_preview_name_1">Water plants</string>
+    <string name="widget_preview_due_1">due 2d ago</string>
+    <string name="widget_preview_name_2">Change bed sheets</string>
+    <string name="widget_preview_due_2">due today</string>
+    <string name="widget_preview_name_3">Clean fridge</string>
+    <string name="widget_preview_due_3">due in 1w 5d</string>
+
+    <!-- Buttons -->
+    <string name="button_save">Save</string>
+    <string name="button_set">Set</string>
+    <string name="button_delete">Delete</string>
+    <string name="button_log">Log</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="button_clear">Clear</string>
+    <string name="button_set_date">Set date</string>
+    <string name="button_add_date">Add date</string>
+    <string name="button_discard">Discard</string>
+    <string name="button_merge">Merge</string>
+    <string name="button_replace_all">Replace all</string>
+</resources>

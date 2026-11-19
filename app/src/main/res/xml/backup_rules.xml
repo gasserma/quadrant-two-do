@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The same rules for Android 11 and older (Auto Backup). See data_extraction_rules.xml. -->
+<full-backup-content>
+    <include domain="database" path="quadranttwodo.db" />
+    <include domain="database" path="quadranttwodo.db-wal" />
+</full-backup-content>

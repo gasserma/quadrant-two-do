@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Mirrors core/Palette.kt for the XML resources that need it. -->
+<resources>
+    <color name="background">#FF12161D</color>
+    <color name="launcher_background">#FF12161D</color>
+    <color name="ink">#FFE8ECF1</color>
+    <color name="teal">#FF5EC4B6</color>
+    <!-- The ring mark's faint track: teal at 25%. -->
+    <color name="teal_track">#405EC4B6</color>
+
+    <!-- Widget: the slate background at 50%, and sample urgency colours for the picker preview. -->
+    <color name="widget_panel">#8012161D</color>
+    <color name="preview_due_late">#FFED766B</color>
+    <color name="preview_due_now">#FFEDC26B</color>
+    <color name="preview_due_soon">#FF6BEDD7</color>
+</resources>
