@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- A progress ring: a faint full track with a teal arc three-quarters of the way round. -->
+<!-- The quadrant mark three-quarters full: every cell filled except quadrant two (top-right). -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp" android:height="108dp"
     android:viewportWidth="108" android:viewportHeight="108">
+    <!-- Filled: top-left, bottom-left, bottom-right. -->
     <path
-        android:pathData="M54,32 A22,22 0 1,1 53.99,32"
-        android:strokeColor="@color/teal_track"
-        android:strokeWidth="7" />
+        android:fillColor="@color/teal"
+        android:pathData="M34.5,30 h13 a4.5,4.5 0 0 1 4.5,4.5 v13 a4.5,4.5 0 0 1 -4.5,4.5 h-13 a4.5,4.5 0 0 1 -4.5,-4.5 v-13 a4.5,4.5 0 0 1 4.5,-4.5 z M34.5,56 h13 a4.5,4.5 0 0 1 4.5,4.5 v13 a4.5,4.5 0 0 1 -4.5,4.5 h-13 a4.5,4.5 0 0 1 -4.5,-4.5 v-13 a4.5,4.5 0 0 1 4.5,-4.5 z M60.5,56 h13 a4.5,4.5 0 0 1 4.5,4.5 v13 a4.5,4.5 0 0 1 -4.5,4.5 h-13 a4.5,4.5 0 0 1 -4.5,-4.5 v-13 a4.5,4.5 0 0 1 4.5,-4.5 z" />
+    <!-- Still empty: top-right, quadrant two. -->
     <path
-        android:pathData="M54,32 A22,22 0 1,1 32,54"
-        android:strokeColor="@color/teal"
-        android:strokeLineCap="round"
-        android:strokeWidth="7" />
+        android:fillColor="@color/teal_track"
+        android:pathData="M60.5,30 h13 a4.5,4.5 0 0 1 4.5,4.5 v13 a4.5,4.5 0 0 1 -4.5,4.5 h-13 a4.5,4.5 0 0 1 -4.5,-4.5 v-13 a4.5,4.5 0 0 1 4.5,-4.5 z" />
 </vector>

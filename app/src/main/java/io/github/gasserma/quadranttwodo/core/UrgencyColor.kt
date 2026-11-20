@@ -27,13 +27,16 @@ fun urgencyColor(u: Double?): Int {
     return hsvToArgb(hue, SATURATION, VALUE)
 }
 
-/**
- * How full the progress ring is: 0 just after doing the task, 1 when it falls due.
- * Overdue tasks ([isOverdue]) are drawn as a solid dot instead.
- */
-fun urgencyProgress(u: Double?): Float = if (u == null) 0f else (u + 1).coerceIn(0.0, 1.0).toFloat()
+/** The urgency mark is a 2×2 grid, after the Eisenhower matrix. */
+const val QUADRANTS = 4
 
-fun isOverdue(u: Double?): Boolean = u != null && u > 0
+/**
+ * How many cells of the urgency mark are filled: one more for each quarter of the period since
+ * the task was last done, so all four when it falls due. Overdue tasks stay full (the urgency
+ * colour shows how late). 0 when there is no due date.
+ */
+fun filledQuadrants(u: Double?): Int =
+    if (u == null) 0 else floor((u + 1) * QUADRANTS).toInt().coerceIn(0, QUADRANTS)
 
 private fun lerp(a: Float, b: Float, t: Float) = a + (b - a) * t
 

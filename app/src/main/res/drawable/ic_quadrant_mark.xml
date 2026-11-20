@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The app's mark: the 2×2 quadrant mark three-quarters full, matching the launcher icon. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp" android:height="24dp"
+    android:viewportWidth="24" android:viewportHeight="24">
+    <!-- Filled: top-left, bottom-left, bottom-right. -->
+    <path
+        android:fillColor="@color/teal"
+        android:pathData="M5,3.5 h4.5 a1.5,1.5 0 0 1 1.5,1.5 v4.5 a1.5,1.5 0 0 1 -1.5,1.5 h-4.5 a1.5,1.5 0 0 1 -1.5,-1.5 v-4.5 a1.5,1.5 0 0 1 1.5,-1.5 z M5,13 h4.5 a1.5,1.5 0 0 1 1.5,1.5 v4.5 a1.5,1.5 0 0 1 -1.5,1.5 h-4.5 a1.5,1.5 0 0 1 -1.5,-1.5 v-4.5 a1.5,1.5 0 0 1 1.5,-1.5 z M14.5,13 h4.5 a1.5,1.5 0 0 1 1.5,1.5 v4.5 a1.5,1.5 0 0 1 -1.5,1.5 h-4.5 a1.5,1.5 0 0 1 -1.5,-1.5 v-4.5 a1.5,1.5 0 0 1 1.5,-1.5 z" />
+    <!-- Still empty: top-right, quadrant two. -->
+    <path
+        android:fillColor="@color/teal_track"
+        android:pathData="M14.5,3.5 h4.5 a1.5,1.5 0 0 1 1.5,1.5 v4.5 a1.5,1.5 0 0 1 -1.5,1.5 h-4.5 a1.5,1.5 0 0 1 -1.5,-1.5 v-4.5 a1.5,1.5 0 0 1 1.5,-1.5 z" />
+</vector>

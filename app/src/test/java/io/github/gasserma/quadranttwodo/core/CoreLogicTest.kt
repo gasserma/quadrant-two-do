@@ -92,7 +92,7 @@ class CoreLogicTest {
         assertThat(rankTasks(tasks, now).map { it.task.name }).containsExactly("apple", "Mango", "Zebra").inOrder()
     }
 
-    // colours and the progress ring
+    // colours and the quadrant mark
 
     @Test fun colour_coolToWarmSweep() {
         assertThat(urgencyColor(-1.0)).isEqualTo(0xFF6BEDD7.toInt()) // just done: teal
@@ -113,15 +113,16 @@ class CoreLogicTest {
         assertThat(hsvToArgb(0f, 0f, 0.5f)).isEqualTo(0xFF808080.toInt())
     }
 
-    @Test fun ring_fillsUpToDueThenBecomesADot() {
-        assertThat(urgencyProgress(-1.0)).isEqualTo(0f)   // just done: empty
-        assertThat(urgencyProgress(-0.25)).isEqualTo(0.75f)
-        assertThat(urgencyProgress(0.0)).isEqualTo(1f)    // due: full
-        assertThat(urgencyProgress(3.0)).isEqualTo(1f)
-        assertThat(urgencyProgress(null)).isEqualTo(0f)
-        assertThat(isOverdue(0.0)).isFalse()
-        assertThat(isOverdue(0.01)).isTrue()
-        assertThat(isOverdue(null)).isFalse()
+    @Test fun quadrants_fillOnePerQuarterPeriod() {
+        assertThat(filledQuadrants(-1.0)).isEqualTo(0)  // just done: empty
+        assertThat(filledQuadrants(-0.8)).isEqualTo(0)
+        assertThat(filledQuadrants(-0.75)).isEqualTo(1) // a quarter of the way
+        assertThat(filledQuadrants(-0.5)).isEqualTo(2)
+        assertThat(filledQuadrants(-0.01)).isEqualTo(3)
+        assertThat(filledQuadrants(0.0)).isEqualTo(4)   // due: all four, quadrant two last
+        assertThat(filledQuadrants(3.0)).isEqualTo(4)   // overdue stays full
+        assertThat(filledQuadrants(-5.0)).isEqualTo(0)  // logged ahead
+        assertThat(filledQuadrants(null)).isEqualTo(0)
     }
 
     // wording

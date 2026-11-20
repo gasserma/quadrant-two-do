@@ -5,7 +5,7 @@
     <color name="launcher_background">#FF12161D</color>
     <color name="ink">#FFE8ECF1</color>
     <color name="teal">#FF5EC4B6</color>
-    <!-- The ring mark's faint track: teal at 25%. -->
+    <!-- The quadrant mark's empty cells: teal at 25%. -->
     <color name="teal_track">#405EC4B6</color>
 
     <!-- Widget: the slate background at 50%, and sample urgency colours for the picker preview. -->

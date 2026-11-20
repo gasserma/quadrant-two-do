@@ -23,7 +23,7 @@ u = (now − next due at 06:00) / period          (in days)
 - A task becomes due at **06:00 local time** on its due day, so the list doesn't flip at midnight.
 - The score changes continuously through the day.
 
-Urgency sorts the list, picks the colour, and fills the ring.
+Urgency sorts the list, picks the colour, and fills the quadrant mark.
 
 ### Next due
 
@@ -106,22 +106,25 @@ Urgency colour sweeps **teal → amber → coral** (hue 170° → 40° → 5°, 
 teal when just done, amber when due, coral once a whole period late. Tasks with no due date use the
 secondary text colour. The system font is used throughout, light weight for body text.
 
-### The ring
+### The quadrant mark
 
-Each task has a small **progress ring** in its urgency colour. The arc fills clockwise from the top,
-from empty (just done) to full (due). Once overdue it becomes a solid dot. The ring is also the
-**done button**: tapping it asks "Log *task* as done today?" and logs it on confirmation.
+Each task has a small **quadrant mark** in its urgency colour: a 2×2 grid, after the Eisenhower
+matrix. One cell fills for each quarter of the period since the task was done: top-left,
+bottom-left, bottom-right, and finally top-right (quadrant two: important, not urgent) when it falls
+due. Overdue tasks stay full, and the colour shows how late. Empty cells are a faint version of the
+colour. The mark is also the **done button**: tapping it asks "Log *task* as done today?" and logs
+it on confirmation.
 
-The same ring, three-quarters full in teal, is the app's mark: the launcher icon and the logo next to
-the title.
+The same mark, three-quarters full in teal (quadrant two still empty), is the app's logo: the
+launcher icon and the logo next to the title.
 
 ## Screens
 
 ### Task list
 
-- Title bar: ring mark + app name, **+** (new task), ⋮ (Import backup…, Export backup…; debug builds
+- Title bar: quadrant mark + app name, **+** (new task), ⋮ (Import backup…, Export backup…; debug builds
   also have "Load sample backup").
-- One row per task: ring (tap to log), name, due text in the urgency colour.
+- One row per task: quadrant mark (tap to log), name, due text in the urgency colour.
 - Tap a row to open it. Long-press to select several, then **Log** (done today) or **Delete**, each
   with a confirmation.
 
@@ -208,4 +211,4 @@ refreshes). minSdk 26, targetSdk 36. Package `io.github.gasserma.quadranttwodo`.
 - [ ] Check "Quadrant Two Do" is free on the Play Store before publishing (the package name is
   permanent once published).
 - [ ] Launcher icon polish for release; release signing and build.
-- [ ] Should tapping a widget row log the task, like the ring in the app?
+- [ ] Should tapping a widget row log the task, like the quadrant mark in the app?

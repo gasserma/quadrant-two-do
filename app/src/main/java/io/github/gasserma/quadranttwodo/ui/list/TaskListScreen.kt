@@ -47,11 +47,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.StrokeCap
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
@@ -63,9 +62,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.gasserma.quadranttwodo.R
-import io.github.gasserma.quadranttwodo.core.isOverdue
+import io.github.gasserma.quadranttwodo.core.filledQuadrants
 import io.github.gasserma.quadranttwodo.core.urgencyColor
-import io.github.gasserma.quadranttwodo.core.urgencyProgress
 import io.github.gasserma.quadranttwodo.data.PendingImport
 import io.github.gasserma.quadranttwodo.ui.common.ConfirmDialog
 
@@ -232,7 +230,7 @@ private fun ListTopBar(
     TopAppBar(
         title = {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(painterResource(R.drawable.ic_ring_mark), contentDescription = null, modifier = Modifier.size(26.dp))
+                Image(painterResource(R.drawable.ic_quadrant_mark), contentDescription = null, modifier = Modifier.size(26.dp))
                 Text(stringResource(R.string.app_name), modifier = Modifier.padding(start = 12.dp))
             }
         },
@@ -321,7 +319,7 @@ private fun TaskList(
     }
 }
 
-/** One task row: the progress ring (which is also the "done" button), name and due text. */
+/** One task row: the quadrant mark (which is also the "done" button), name and due text. */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TaskRowItem(
@@ -342,9 +340,9 @@ fun TaskRowItem(
             .padding(start = 4.dp, end = 16.dp, top = 4.dp, bottom = 4.dp)
             .testTag("task:${row.task.name}"),
     ) {
-        // The ring doubles as the "done" button (it asks for confirmation first).
+        // The mark doubles as the "done" button (it asks for confirmation first).
         IconButton(onClick = onDone, modifier = Modifier.size(48.dp).testTag("done:${row.task.name}")) {
-            UrgencyRing(
+            QuadrantMark(
                 row.urgency,
                 color,
                 Modifier
@@ -369,25 +367,27 @@ fun TaskRowItem(
     }
 }
 
+/** Cells of the mark as (column, row), in the order they fill. Quadrant two, top-right, is last. */
+private val FILL_ORDER = listOf(0 to 0, 0 to 1, 1 to 1, 1 to 0)
+
 /**
- * How far through its period a task is: the arc fills from the top, clockwise, from just done
- * (empty) to due (full). Once overdue it becomes a solid dot.
+ * How far through its period a task is, as a 2×2 grid after the Eisenhower matrix. One cell fills
+ * per quarter of the period: top-left, bottom-left, bottom-right, then top-right (quadrant two:
+ * important, not urgent) when the task falls due. Overdue tasks stay full; the colour shows how late.
  */
 @Composable
-fun UrgencyRing(urgency: Double?, color: Color, modifier: Modifier = Modifier) {
-    val progress = urgencyProgress(urgency)
-    val overdue = isOverdue(urgency)
+fun QuadrantMark(urgency: Double?, color: Color, modifier: Modifier = Modifier) {
+    val filled = filledQuadrants(urgency)
     Canvas(modifier) {
-        val stroke = 2.5.dp.toPx()
-        val inset = stroke / 2
-        val arcSize = Size(size.width - stroke, size.height - stroke)
-        if (overdue) {
-            drawCircle(color, radius = size.minDimension / 2)
-        } else {
-            drawArc(color.copy(alpha = 0.25f), 0f, 360f, false, Offset(inset, inset), arcSize, style = Stroke(stroke))
-            drawArc(
-                color, -90f, 360f * progress, false, Offset(inset, inset), arcSize,
-                style = Stroke(stroke, cap = StrokeCap.Round),
+        val gap = 2.dp.toPx()
+        val cell = (size.minDimension - gap) / 2
+        val corner = CornerRadius(cell * 0.2f)
+        FILL_ORDER.forEachIndexed { index, (column, row) ->
+            drawRoundRect(
+                color = if (index < filled) color else color.copy(alpha = 0.25f),
+                topLeft = Offset(column * (cell + gap), row * (cell + gap)),
+                size = Size(cell, cell),
+                cornerRadius = corner,
             )
         }
     }
