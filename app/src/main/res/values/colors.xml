@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Mirrors core/Palette.kt for the XML resources that need it. -->
+<!-- Light theme ("Day"). Mirrors core/Palette.kt for the XML resources that need it; the dark
+     theme's values are in values-night/colors.xml. -->
 <resources>
-    <color name="background">#FF12161D</color>
+    <color name="background">#FFF7F8FA</color>
+    <color name="ink">#FF1A2029</color>
+
+    <!-- Widget picker preview: the background at the default 70% opacity, and sample urgency
+         colours. -->
+    <color name="widget_panel">#B3F7F8FA</color>
+    <color name="preview_due_late">#FF731911</color>
+    <color name="preview_due_now">#FF735211</color>
+    <color name="preview_due_soon">#FF117362</color>
+
+    <!-- Not themed: the launcher icon and the logo mark are the same in both themes. -->
     <color name="launcher_background">#FF12161D</color>
-    <color name="ink">#FFE8ECF1</color>
     <color name="teal">#FF5EC4B6</color>
     <!-- The quadrant mark's empty cells: teal at 25%. -->
     <color name="teal_track">#405EC4B6</color>
-
-    <!-- Widget: the slate background at 50%, and sample urgency colours for the picker preview. -->
-    <color name="widget_panel">#8012161D</color>
-    <color name="preview_due_late">#FFED766B</color>
-    <color name="preview_due_now">#FFEDC26B</color>
-    <color name="preview_due_soon">#FF6BEDD7</color>
 </resources>

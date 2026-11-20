@@ -7,6 +7,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasTestTag
+import androidx.compose.ui.test.isSelected
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createComposeRule
 import androidx.compose.ui.test.longClick
@@ -16,9 +17,13 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTouchInput
+import com.google.common.truth.Truth.assertThat
 import io.github.gasserma.quadranttwodo.AppContainer
 import io.github.gasserma.quadranttwodo.TestSupport
-import com.google.common.truth.Truth.assertThat
+import io.github.gasserma.quadranttwodo.core.ThemeMode
+import io.github.gasserma.quadranttwodo.core.UrgencyScheme
+import java.io.File
+import java.time.LocalDate
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -28,8 +33,6 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
-import java.io.File
-import java.time.LocalDate
 
 @OptIn(ExperimentalTestApi::class)
 @RunWith(RobolectricTestRunner::class)
@@ -199,5 +202,22 @@ class UiFlowTest {
             db.version = 8
         }
         repo.importBackup(file)
+    }
+
+    @Test fun settingsScreenSavesChoicesAndReturns() {
+        seed()
+        start()
+        waitFor("overflow").performClick()
+        waitFor("settings").performClick()
+        waitFor("theme:dark").performClick()
+        waitFor("scheme:berry").performClick()
+        // Saving is asynchronous; the screen shows the choice once it's stored.
+        rule.waitUntilAtLeastOneExists(hasTestTag("theme:dark") and isSelected(), 5_000)
+        rule.waitUntilAtLeastOneExists(hasTestTag("scheme:berry") and isSelected(), 5_000)
+        val saved = runBlocking { container.settings.settings.first() }
+        assertThat(saved.theme).isEqualTo(ThemeMode.Dark)
+        assertThat(saved.scheme).isEqualTo(UrgencyScheme.Berry)
+        waitFor("back").performClick()
+        waitFor("task:Alpha").assertIsDisplayed()
     }
 }

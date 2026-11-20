@@ -3,11 +3,10 @@ package io.github.gasserma.quadranttwodo.widget
 import io.github.gasserma.quadranttwodo.core.Task
 import io.github.gasserma.quadranttwodo.core.dueLabel
 import io.github.gasserma.quadranttwodo.core.rankTasks
-import io.github.gasserma.quadranttwodo.core.urgencyColor
 import java.time.LocalDateTime
 
-/** One widget row: name on the left, due text on the right in its urgency colour. */
-data class WidgetRow(val id: Long, val name: String, val dueText: String, val dueColor: Int)
+/** One widget row: name on the left, due text on the right coloured by [urgency] (null: no due date). */
+data class WidgetRow(val id: Long, val name: String, val dueText: String, val urgency: Double?)
 
 /** Every task, sorted like the app. */
 fun buildWidgetRows(tasks: List<Task>, now: LocalDateTime): List<WidgetRow> {
@@ -17,7 +16,7 @@ fun buildWidgetRows(tasks: List<Task>, now: LocalDateTime): List<WidgetRow> {
             id = r.task.id,
             name = r.task.name,
             dueText = r.task.dueLabel(today),
-            dueColor = urgencyColor(r.urgency),
+            urgency = r.urgency,
         )
     }
 }

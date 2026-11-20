@@ -118,6 +118,37 @@
     <string name="widget_preview_name_3">Clean fridge</string>
     <string name="widget_preview_due_3">due in 1w 5d</string>
 
+    <!-- Settings -->
+    <string name="action_settings">Settings</string>
+    <string name="title_settings">Settings</string>
+    <string name="settings_theme">Theme</string>
+    <string name="theme_system">System</string>
+    <string name="theme_light">Light</string>
+    <string name="theme_dark">Dark</string>
+    <string name="settings_theme_hint">System follows your phone\'s dark-mode setting.</string>
+    <string name="settings_widget_opacity">Widget background</string>
+    <string name="settings_widget_opacity_hint">How solid the widget\'s panel is behind your tasks: %d%%</string>
+    <string name="settings_colours">Colours</string>
+    <string name="settings_colours_hint">How a task\'s colour changes from just done, to due, to late.</string>
+    <string name="scheme_dusk">Dusk</string>
+    <string name="scheme_dusk_detail">Teal, amber, coral</string>
+    <string name="scheme_traffic_light">Traffic light</string>
+    <string name="scheme_traffic_light_detail">Green, amber, red</string>
+    <string name="scheme_blue_orange">Blue and orange</string>
+    <string name="scheme_blue_orange_detail">Easier to tell apart with colour blindness</string>
+    <string name="scheme_sunset">Sunset</string>
+    <string name="scheme_sunset_detail">Gold, orange, magenta</string>
+    <string name="scheme_forest">Forest</string>
+    <string name="scheme_forest_detail">Green, lime, rust</string>
+    <string name="scheme_ocean">Ocean</string>
+    <string name="scheme_ocean_detail">Aqua, blue, indigo: no alarm colours</string>
+    <string name="scheme_berry">Berry</string>
+    <string name="scheme_berry_detail">Violet, pink, crimson</string>
+    <string name="scheme_fire">Fire</string>
+    <string name="scheme_fire_detail">Yellow, orange, red</string>
+    <string name="scheme_monochrome">Monochrome</string>
+    <string name="scheme_monochrome_detail">Teal, getting stronger</string>
+
     <!-- Buttons -->
     <string name="button_save">Save</string>
     <string name="button_set">Set</string>

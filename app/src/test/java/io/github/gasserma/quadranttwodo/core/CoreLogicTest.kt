@@ -1,6 +1,7 @@
 package io.github.gasserma.quadranttwodo.core
 
 import com.google.common.truth.Truth.assertThat
+import com.google.common.truth.Truth.assertWithMessage
 import org.junit.Test
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -95,15 +96,89 @@ class CoreLogicTest {
     // colours and the quadrant mark
 
     @Test fun colour_coolToWarmSweep() {
-        assertThat(urgencyColor(-1.0)).isEqualTo(0xFF6BEDD7.toInt()) // just done: teal
-        assertThat(urgencyColor(0.0)).isEqualTo(0xFFEDC26B.toInt())  // due: amber
-        assertThat(urgencyColor(1.0)).isEqualTo(0xFFED766B.toInt())  // a period late: coral
-        assertThat(urgencyColor(5.0)).isEqualTo(urgencyColor(1.0))   // clamped
-        assertThat(urgencyColor(-3.0)).isEqualTo(urgencyColor(-1.0)) // clamped
+        val dark = Palette.Dark
+        val dusk = UrgencyScheme.Dusk
+        assertThat(urgencyColor(-1.0, dark, dusk)).isEqualTo(0xFF6BEDD7.toInt()) // just done: teal
+        assertThat(urgencyColor(0.0, dark, dusk)).isEqualTo(0xFFEDC26B.toInt())  // due: amber
+        assertThat(urgencyColor(1.0, dark, dusk)).isEqualTo(0xFFED766B.toInt())  // a period late: coral
+        assertThat(urgencyColor(5.0, dark, dusk)).isEqualTo(urgencyColor(1.0, dark, dusk))   // clamped
+        assertThat(urgencyColor(-3.0, dark, dusk)).isEqualTo(urgencyColor(-1.0, dark, dusk)) // clamped
+    }
+
+    @Test fun colour_lightThemeIsDarkerThanDark() {
+        for (scheme in UrgencyScheme.entries) {
+            for (u in listOf(-1.0, 0.0, 1.0)) {
+                assertWithMessage("%s at %s", scheme, u)
+                    .that(luminance(urgencyColor(u, Palette.Light, scheme)))
+                    .isLessThan(luminance(urgencyColor(u, Palette.Dark, scheme)))
+            }
+        }
+    }
+
+    @Test fun colour_greyEndFadesInsteadOfChangingHue() {
+        // Blue and orange: "due" is grey, and halfway to it the colour is still a (paler) blue.
+        val dark = Palette.Dark
+        val due = urgencyColor(0.0, dark, UrgencyScheme.BlueOrange)
+        assertThat(channels(due).let { it.max() - it.min() }).isAtMost(2)
+        val (r, g, b) = channels(urgencyColor(-0.5, dark, UrgencyScheme.BlueOrange))
+        assertThat(b).isGreaterThan(g)
+        assertThat(g).isGreaterThan(r)
     }
 
     @Test fun colour_noDueDateIsMuted() {
-        assertThat(urgencyColor(null)).isEqualTo(NO_URGENCY_COLOR)
+        for (scheme in UrgencyScheme.entries) {
+            assertThat(urgencyColor(null, Palette.Dark, scheme)).isEqualTo(Palette.Dark.textMuted)
+            assertThat(urgencyColor(null, Palette.Light, scheme)).isEqualTo(Palette.Light.textMuted)
+        }
+    }
+
+    /** Every scheme's urgency colours, and the muted text and accent, must read as text: WCAG AA. */
+    @Test fun colour_everySchemeReadableOnItsBackgroundInBothThemes() {
+        for (palette in listOf(Palette.Dark, Palette.Light)) {
+            for (scheme in UrgencyScheme.entries) {
+                val samples = (-20..20).map { urgencyColor(it / 20.0, palette, scheme) } + palette.textMuted + palette.accent
+                for (c in samples) {
+                    assertWithMessage("%s: %s on %s", scheme, Integer.toHexString(c), Integer.toHexString(palette.background))
+                        .that(contrast(c, palette.background)).isAtLeast(4.5)
+                }
+            }
+        }
+    }
+
+    @Test fun schemes_haveDistinctEndsAndStableIds() {
+        for (scheme in UrgencyScheme.entries) {
+            assertWithMessage("%s", scheme)
+                .that(urgencyColor(-1.0, Palette.Dark, scheme)).isNotEqualTo(urgencyColor(1.0, Palette.Dark, scheme))
+            assertThat(UrgencyScheme.fromId(scheme.id)).isEqualTo(scheme)
+        }
+        assertThat(UrgencyScheme.entries.map { it.id }.toSet()).hasSize(UrgencyScheme.entries.size)
+        assertThat(UrgencyScheme.fromId("no-such-scheme")).isEqualTo(UrgencyScheme.Default)
+        assertThat(UrgencyScheme.fromId(null)).isEqualTo(UrgencyScheme.Default)
+    }
+
+    @Test fun themeMode_resolvesAgainstTheSystem() {
+        assertThat(ThemeMode.System.isDark(systemDark = true)).isTrue()
+        assertThat(ThemeMode.System.isDark(systemDark = false)).isFalse()
+        assertThat(ThemeMode.Light.isDark(systemDark = true)).isFalse()
+        assertThat(ThemeMode.Dark.isDark(systemDark = false)).isTrue()
+        assertThat(ThemeMode.fromId("dark")).isEqualTo(ThemeMode.Dark)
+        assertThat(ThemeMode.fromId("garbage")).isEqualTo(ThemeMode.System)
+    }
+
+    private fun channels(argb: Int) = listOf((argb shr 16) and 0xFF, (argb shr 8) and 0xFF, argb and 0xFF)
+
+    // An independent implementation of the WCAG formulas, so the test doesn't just trust core/Contrast.kt.
+    private fun contrast(a: Int, b: Int): Double {
+        val (hi, lo) = listOf(luminance(a), luminance(b)).sortedDescending()
+        return (hi + 0.05) / (lo + 0.05)
+    }
+
+    private fun luminance(argb: Int): Double {
+        fun channel(shift: Int): Double {
+            val c = ((argb shr shift) and 0xFF) / 255.0
+            return if (c <= 0.04045) c / 12.92 else Math.pow((c + 0.055) / 1.055, 2.4)
+        }
+        return 0.2126 * channel(16) + 0.7152 * channel(8) + 0.0722 * channel(0)
     }
 
     @Test fun hsvToArgb_primaries() {

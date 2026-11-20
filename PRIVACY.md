@@ -6,8 +6,9 @@ Quadrant Two Do doesn't collect, send or share any of your data.
 
 ## What the app stores
 
-Your tasks, their periods and details, and your log entries are stored only on your phone, in the
-app's private storage. There are no accounts, no analytics, no ads and no tracking.
+Your tasks, their periods and details, your log entries and your appearance settings (theme, widget
+background, colours) are stored only on your phone, in the app's private storage. There are no
+accounts, no analytics, no ads and no tracking.
 
 The app can't connect to the internet: it doesn't have Android's internet permission. Its other
 permissions are used only to refresh the home-screen widget on schedule (keeping it current after a
@@ -21,7 +22,7 @@ Only when you or Android's own features move it:
   What happens to it after that is up to you.
 - **Import:** when you choose *Import backup…*, the app reads the file you pick. Nothing is uploaded.
 - **Android backup:** if you've turned on backup on your phone, Android may include the app's task
-  database in your Google backup and in transfers to a new phone. Google handles this under its
+  database and settings in your Google backup and in transfers to a new phone. Google handles this under its
   own privacy policy, and the developer can't see it.
 
 ## Deleting your data

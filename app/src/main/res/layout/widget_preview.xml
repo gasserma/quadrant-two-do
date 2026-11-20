@@ -1,32 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Static picker preview (Android 12+): a few sample rows in the widget's style. -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="UselessParent"
+<!-- Static picker preview (Android 12+): a few sample rows in the widget's style, filling the
+     widget's bounds like the real widget. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp">
+    android:background="@drawable/widget_preview_panel"
+    android:orientation="vertical"
+    android:paddingHorizontal="14dp"
+    android:paddingVertical="10dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/widget_panel"
-        android:orientation="vertical"
-        android:padding="8dp">
-
-        <LinearLayout style="@style/WidgetPreviewRow">
-            <TextView style="@style/WidgetPreviewName" android:text="@string/widget_preview_name_1" />
-            <TextView style="@style/WidgetPreviewDue" android:text="@string/widget_preview_due_1" android:textColor="@color/preview_due_late" />
-        </LinearLayout>
-
-        <LinearLayout style="@style/WidgetPreviewRow">
-            <TextView style="@style/WidgetPreviewName" android:text="@string/widget_preview_name_2" />
-            <TextView style="@style/WidgetPreviewDue" android:text="@string/widget_preview_due_2" android:textColor="@color/preview_due_now" />
-        </LinearLayout>
-
-        <LinearLayout style="@style/WidgetPreviewRow">
-            <TextView style="@style/WidgetPreviewName" android:text="@string/widget_preview_name_3" />
-            <TextView style="@style/WidgetPreviewDue" android:text="@string/widget_preview_due_3" android:textColor="@color/preview_due_soon" />
-        </LinearLayout>
+    <LinearLayout style="@style/WidgetPreviewRow">
+        <TextView style="@style/WidgetPreviewName" android:text="@string/widget_preview_name_1" />
+        <TextView style="@style/WidgetPreviewDue" android:text="@string/widget_preview_due_1" android:textColor="@color/preview_due_late" />
     </LinearLayout>
-</FrameLayout>
+
+    <LinearLayout style="@style/WidgetPreviewRow">
+        <TextView style="@style/WidgetPreviewName" android:text="@string/widget_preview_name_2" />
+        <TextView style="@style/WidgetPreviewDue" android:text="@string/widget_preview_due_2" android:textColor="@color/preview_due_now" />
+    </LinearLayout>
+
+    <LinearLayout style="@style/WidgetPreviewRow">
+        <TextView style="@style/WidgetPreviewName" android:text="@string/widget_preview_name_3" />
+        <TextView style="@style/WidgetPreviewDue" android:text="@string/widget_preview_due_3" android:textColor="@color/preview_due_soon" />
+    </LinearLayout>
+</LinearLayout>

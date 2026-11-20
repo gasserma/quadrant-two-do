@@ -7,7 +7,6 @@ import androidx.test.core.app.ApplicationProvider
 import io.github.gasserma.quadranttwodo.BLUEPRINT_NOW
 import io.github.gasserma.quadranttwodo.copyRegularlyDb
 import io.github.gasserma.quadranttwodo.core.Task
-import io.github.gasserma.quadranttwodo.core.urgencyColor
 import io.github.gasserma.quadranttwodo.data.BackupFormat
 import io.github.gasserma.quadranttwodo.data.toDomain
 import com.google.common.truth.Truth.assertThat
@@ -27,7 +26,7 @@ class WidgetTest {
         assertThat(rows).hasSize(22)
         assertThat(rows.take(3).map { it.name }).containsExactly("Floss", "Gym", "Stick to Cut and Record").inOrder()
         assertThat(rows.first().dueText).isEqualTo("due 46w ago")
-        assertThat(rows.first().dueColor).isEqualTo(urgencyColor(322.0)) // coral: long overdue
+        assertThat(rows.first().urgency!!).isWithin(0.01).of(322.12) // long overdue: coral
         assertThat(rows.last().name).isEqualTo("Clean Grill")
         assertThat(rows.last().dueText).isEqualTo("due in 1w 2d")
     }

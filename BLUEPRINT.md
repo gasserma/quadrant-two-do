@@ -5,8 +5,8 @@ three months, see the dentist twice a year. Each task has a period; the app show
 that period you are, sorts the most urgent task to the top, and keeps a log of when you did it. A
 home-screen widget shows the same list.
 
-There are no notifications, accounts or settings. Data stays on the phone, moves to a new phone with
-Android's backup, and can be exported to a file.
+There are no notifications or accounts, and only a few appearance settings. Data stays on the phone,
+moves to a new phone with Android's backup, and can be exported to a file.
 
 *(The name: the Eisenhower matrix's quadrant II is "important but not urgent", which is exactly
 these tasks. This is a to-do list for quadrant two.)*
@@ -93,18 +93,40 @@ Every number of days is shown as years (365 days), weeks and days, leaving out z
   "on schedule", "2d late", "1d early". An entry without a readable date (possible only in imported
   data) shows no timing and is skipped when comparing the others.
 
-### Colours ("Dusk")
+### Colours
 
-| Role | Colour |
+There's a dark theme ("Dusk") and a light one ("Day"). By default the app follows the phone's
+dark-mode setting; Settings can fix it to either.
+
+| Role | Dusk (dark) | Day (light) |
+| --- | --- | --- |
+| Background | `#12161D` slate | `#F7F8FA` off-white |
+| Surfaces / dialogs | `#1B212B` | `#ECEFF3` |
+| Accent | `#5EC4B6` sea-glass teal | `#1A7F72` deep teal |
+| Text / secondary text | `#E8ECF1` / `#8B95A5` | `#1A2029` / `#5B6575` |
+
+The urgency colour sweeps through a **colour scheme**: one colour when just done, one when due, one
+once a whole period late, blended in between (the shorter way round the colour wheel; a grey end
+just fades the other colour). Each scheme colour is a hue and a saturation; the theme sets the
+brightness: value 0.93 in Dusk, and in Day 0.62 with saturation × 1.5. Each colour is then made
+just dark enough (Day) or bright enough (Dusk) to reach 4.6:1 contrast with the background, so
+every scheme reads as text in both themes. A unit test checks every scheme, plus the secondary text
+and the accent, against the WCAG AA minimum of 4.5:1.
+
+| Scheme | Just done → due → late |
 | --- | --- |
-| Background | `#12161D` slate |
-| Surfaces / dialogs | `#1B212B` |
-| Accent | `#5EC4B6` sea-glass teal |
-| Text / secondary text | `#E8ECF1` / `#8B95A5` |
+| Dusk (default) | teal 170° → amber 40° → coral 5° |
+| Traffic light | green → amber → red |
+| Blue and orange | blue → grey → orange; easier with colour blindness |
+| Sunset | gold → orange → magenta |
+| Forest | green → yellow-green → rust |
+| Ocean | aqua → blue → indigo; no alarm colours |
+| Berry | violet → pink → crimson |
+| Fire | yellow → orange → red |
+| Monochrome | teal, from nearly grey to strong |
 
-Urgency colour sweeps **teal → amber → coral** (hue 170° → 40° → 5°, saturation 0.55, value 0.93):
-teal when just done, amber when due, coral once a whole period late. Tasks with no due date use the
-secondary text colour. The system font is used throughout, light weight for body text.
+Tasks with no due date use the secondary text colour. The system font is used throughout, light
+weight for body text.
 
 ### The quadrant mark
 
@@ -122,8 +144,8 @@ launcher icon and the logo next to the title.
 
 ### Task list
 
-- Title bar: quadrant mark + app name, **+** (new task), ⋮ (Import backup…, Export backup…; debug builds
-  also have "Load sample backup").
+- Title bar: quadrant mark + app name, **+** (new task), ⋮ (Import backup…, Export backup…, Settings;
+  debug builds also have "Load sample backup").
 - One row per task: quadrant mark (tap to log), name, due text in the urgency colour.
 - Tap a row to open it. Long-press to select several, then **Log** (done today) or **Delete**, each
   with a confirmation.
@@ -141,23 +163,41 @@ launcher icon and the logo next to the title.
 - An existing task has a delete button. A new task doesn't: going back saves it, or offers to
   discard it if it has no name.
 
+### Settings
+
+Every change is saved straight away.
+
+- **Theme:** System (follow the phone's dark mode, the default), Light or Dark. On Android 12+ the
+  choice is also given to the system, so the launch screen matches.
+- **Widget background:** how solid the widget's panel is, 0–100% in 5% steps (default 70%).
+  Over a dark wallpaper the light theme needs a high value, and over a light one the dark theme does.
+- **Colours:** the urgency colour scheme (see Colours), each shown with five sample marks.
+
 ### Widget
 
 A scrolling list of every task, sorted like the app: name on the left, due text on the right in its
-urgency colour, on a 50% slate panel. Tapping opens the app. Two sizes: small (110 × 40 dp, fits 2×1)
-and medium (250 × 110 dp, also allowed on the lock screen); both resize.
+urgency colour, on a panel of the app's background at the opacity chosen in Settings. It follows the
+theme setting (with System, the launcher picks light or dark colours itself).
 
-It is redrawn on every data change while the app runs, every 4 hours (WorkManager), and just after
-06:00 each day when tasks become due.
+Like the system's own widgets (Calendar, Gmail), the panel fills all the space the launcher gives
+it, with the system's widget corner radius on Android 12+, so it lines up with widgets beside it.
+The list sits 14dp in from the sides and 10dp from the top and bottom, clear of the rounded corners.
+Rows are compact (16sp names, 13sp due text, 3dp row padding) so a 2-row widget fits about seven
+tasks. Tapping opens the app. Two sizes: small (110 × 40 dp, fits 2×1) and medium (250 × 110 dp,
+also allowed on the lock screen); both resize.
+
+It is redrawn on every change to the tasks, the log or the settings while the app runs, every 4
+hours (WorkManager), and just after 06:00 each day when tasks become due.
 
 ## Backups and moving to a new phone
 
 ### Automatic
 
-Android's own backup carries the task database to a new phone: Google cloud backup and the
-device-to-device transfer during phone setup. The rules (`data_extraction_rules.xml`,
-`backup_rules.xml`) include only `quadranttwodo.db` and its write-ahead log; scheduled-job and widget
-state are per-device and rebuild themselves. This works as long as the user has backup turned on.
+Android's own backup carries the task database and the settings to a new phone: Google cloud
+backup and the device-to-device transfer during phone setup. The rules (`data_extraction_rules.xml`,
+`backup_rules.xml`) include only `quadranttwodo.db`, its write-ahead log and the settings file
+(`datastore/settings.preferences_pb`); scheduled-job and widget state are per-device and rebuild
+themselves. Exported backup files hold only the tasks and log, not the settings. This works as long as the user has backup turned on.
 
 ### Export
 
@@ -186,9 +226,9 @@ refreshes). minSdk 26, targetSdk 36. Package `io.github.gasserma.quadranttwodo`.
 
 | Area | Code |
 | --- | --- |
-| Urgency, next due, sorting, wording, colours | `core/` |
-| Database, backups, import/merge | `data/` |
-| Screens | `ui/list`, `ui/edit` |
+| Urgency, next due, sorting, wording, colours, settings model | `core/` |
+| Database, backups, import/merge, settings storage (DataStore) | `data/` |
+| Screens | `ui/list`, `ui/edit`, `ui/settings` |
 | Widget | `widget/` |
 
 ## Testing

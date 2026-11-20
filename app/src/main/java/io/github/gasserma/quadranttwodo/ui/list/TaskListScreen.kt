@@ -3,7 +3,6 @@ package io.github.gasserma.quadranttwodo.ui.list
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -47,9 +46,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.testTag
@@ -62,10 +58,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.gasserma.quadranttwodo.R
-import io.github.gasserma.quadranttwodo.core.filledQuadrants
-import io.github.gasserma.quadranttwodo.core.urgencyColor
 import io.github.gasserma.quadranttwodo.data.PendingImport
 import io.github.gasserma.quadranttwodo.ui.common.ConfirmDialog
+import io.github.gasserma.quadranttwodo.ui.common.QuadrantMark
+import io.github.gasserma.quadranttwodo.ui.theme.urgencyColorOf
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -73,6 +69,7 @@ fun TaskListScreen(
     viewModel: TaskListViewModel,
     onOpenTask: (Long) -> Unit,
     onNewTask: () -> Unit,
+    onOpenSettings: () -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val selection by viewModel.selection.collectAsStateWithLifecycle()
@@ -133,6 +130,7 @@ fun TaskListScreen(
                     onNewTask = onNewTask,
                     onImport = { importPicker.launch(arrayOf("*/*")) },
                     onExport = { exportPicker.launch(viewModel.suggestedBackupName(appName)) },
+                    onOpenSettings = onOpenSettings,
                     onLoadTestData = if (viewModel.hasTestData) viewModel::requestLoadTestData else null,
                 )
             }
@@ -224,6 +222,7 @@ private fun ListTopBar(
     onNewTask: () -> Unit,
     onImport: () -> Unit,
     onExport: () -> Unit,
+    onOpenSettings: () -> Unit,
     onLoadTestData: (() -> Unit)?,
 ) {
     var menu by remember { mutableStateOf(false) }
@@ -251,6 +250,11 @@ private fun ListTopBar(
                     text = { Text(stringResource(R.string.action_export)) },
                     onClick = { menu = false; onExport() },
                     modifier = Modifier.testTag("exportBackup"),
+                )
+                DropdownMenuItem(
+                    text = { Text(stringResource(R.string.action_settings)) },
+                    onClick = { menu = false; onOpenSettings() },
+                    modifier = Modifier.testTag("settings"),
                 )
                 if (onLoadTestData != null) {
                     DropdownMenuItem(
@@ -329,7 +333,7 @@ fun TaskRowItem(
     onLongClick: () -> Unit,
     onDone: () -> Unit,
 ) {
-    val color = Color(urgencyColor(row.urgency))
+    val color = urgencyColorOf(row.urgency)
     val doneLabel = stringResource(R.string.action_log_done_today, row.task.name)
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -364,31 +368,5 @@ fun TaskRowItem(
             maxLines = 1,
             modifier = Modifier.padding(start = 6.dp),
         )
-    }
-}
-
-/** Cells of the mark as (column, row), in the order they fill. Quadrant two, top-right, is last. */
-private val FILL_ORDER = listOf(0 to 0, 0 to 1, 1 to 1, 1 to 0)
-
-/**
- * How far through its period a task is, as a 2×2 grid after the Eisenhower matrix. One cell fills
- * per quarter of the period: top-left, bottom-left, bottom-right, then top-right (quadrant two:
- * important, not urgent) when the task falls due. Overdue tasks stay full; the colour shows how late.
- */
-@Composable
-fun QuadrantMark(urgency: Double?, color: Color, modifier: Modifier = Modifier) {
-    val filled = filledQuadrants(urgency)
-    Canvas(modifier) {
-        val gap = 2.dp.toPx()
-        val cell = (size.minDimension - gap) / 2
-        val corner = CornerRadius(cell * 0.2f)
-        FILL_ORDER.forEachIndexed { index, (column, row) ->
-            drawRoundRect(
-                color = if (index < filled) color else color.copy(alpha = 0.25f),
-                topLeft = Offset(column * (cell + gap), row * (cell + gap)),
-                size = Size(cell, cell),
-                cornerRadius = corner,
-            )
-        }
     }
 }

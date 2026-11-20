@@ -73,12 +73,12 @@ import io.github.gasserma.quadranttwodo.core.nextDue
 import io.github.gasserma.quadranttwodo.core.relativeDays
 import io.github.gasserma.quadranttwodo.core.shortFormat
 import io.github.gasserma.quadranttwodo.core.urgency
-import io.github.gasserma.quadranttwodo.core.urgencyColor
 import io.github.gasserma.quadranttwodo.core.weekdayCaps
 import io.github.gasserma.quadranttwodo.data.LogEntry
 import io.github.gasserma.quadranttwodo.ui.common.ConfirmDialog
 import io.github.gasserma.quadranttwodo.ui.common.DatePickDialog
 import io.github.gasserma.quadranttwodo.ui.theme.SectionHeading
+import io.github.gasserma.quadranttwodo.ui.theme.urgencyColorOf
 import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
@@ -224,7 +224,7 @@ private fun TaskEditContent(
                     heading = stringResource(R.string.label_next_due),
                     value = preview.nextDue()?.longFormat() ?: "—",
                     secondary = preview.dueLabel(today),
-                    secondaryColor = Color(urgencyColor(preview.urgency(state.now))),
+                    secondaryColor = urgencyColorOf(preview.urgency(state.now)),
                     // The first due date only matters until the task is first done.
                     hint = if (preview.lastPerformed == null) {
                         form.firstDue?.let { stringResource(R.string.label_first_due) + ": " + it.shortFormat() }

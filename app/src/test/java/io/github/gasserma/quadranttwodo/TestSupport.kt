@@ -1,11 +1,14 @@
 package io.github.gasserma.quadranttwodo
 
 import android.content.Context
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.test.core.app.ApplicationProvider
 import io.github.gasserma.quadranttwodo.data.BackupManager
 import io.github.gasserma.quadranttwodo.data.QuadrantTwoDoDatabase
+import io.github.gasserma.quadranttwodo.data.SettingsRepository
 import io.github.gasserma.quadranttwodo.data.TaskRepository
 import java.io.File
+import java.nio.file.Files
 import java.time.Clock
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -29,6 +32,12 @@ fun copyRegularlyDb(): File {
     return file
 }
 
+/** A settings store in a fresh temp file, so tests never share or keep settings. */
+fun testSettings(): SettingsRepository {
+    val dir = Files.createTempDirectory("settings").toFile().apply { deleteOnExit() }
+    return SettingsRepository(PreferenceDataStoreFactory.create { File(dir, "test.preferences_pb") })
+}
+
 object TestSupport {
     /** The in-memory database behind the last installed container. */
     lateinit var database: QuadrantTwoDoDatabase
@@ -43,6 +52,7 @@ object TestSupport {
             clock = clock,
             repository = repository,
             backup = BackupManager(context, repository),
+            settings = testSettings(),
         )
         (context as QuadrantTwoDoApp).container = container
         return container
