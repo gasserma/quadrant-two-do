@@ -59,6 +59,11 @@ The same file can be imported back into Quadrant Two Do on another phone.
 Android's own backup (Google backup and the transfer during new-phone setup) carries the task database
 to the new phone automatically, as long as backup is turned on. Export is the manual fallback.
 
+### Privacy
+
+Nothing is collected or sent anywhere; the app doesn't even have internet access. See the
+[privacy policy](PRIVACY.md).
+
 ## Building
 
 Requirements: Android Studio (or a JDK 17+; Android Studio's bundled `jbr` works) and the Android SDK
