@@ -7,3 +7,8 @@ build/
 captures/
 .externalNativeBuild/
 .cxx/
+
+# Release signing: the upload key and its passwords stay out of the repo.
+keystore.properties
+*.jks
+*.keystore
