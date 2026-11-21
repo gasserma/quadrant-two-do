@@ -39,12 +39,12 @@ access, so your data stays on your phone.
 | Feature graphic (1024 × 500) | `feature-1024x500.png` |
 | Phone screenshots (1080 × 2160), in this order | `screenshots/1-list.png` (dark), `2-details.png`, `3-period.png`, `4-list-light.png`, `5-settings.png` (light) |
 
-Screenshots use made-up sample tasks, not real data. Taken from version 0.2.0.
+Screenshots use made-up sample tasks, not real data. Taken from version 0.3.0.
 
-## Release notes: 0.2.0
+## Release notes: 0.3.0
 
 ```
 <en-US>
-Light and dark themes, a new Settings screen (theme, widget background, nine colour schemes), and a widget that lines up with your other widgets and fits more tasks.
+Day counts are shown in plain days ("due in 17 days"), the widget has shorter labels ("2d late", "in 29d"), and it updates faster after you log a task.
 </en-US>
 ```
