@@ -187,7 +187,8 @@ Rows are compact (16sp names, 13sp due text, 3dp row padding) so a 2-row widget 
 tasks. Tapping opens the app. Two sizes: small (110 × 40 dp, fits 2×1) and medium (250 × 110 dp,
 also allowed on the lock screen); both resize.
 
-It is redrawn on every change to the tasks, the log or the settings while the app runs, every 4
+It is redrawn straight away on every change to the tasks, the log or the settings while the app runs,
+and whenever you leave the app; also every 4
 hours (WorkManager), and just after 06:00 each day when tasks become due.
 
 ## Backups and moving to a new phone
