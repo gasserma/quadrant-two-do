@@ -112,11 +112,11 @@
     <string name="widget_medium_label">Quadrant Two Do</string>
     <string name="widget_description">Your tasks, most urgent first</string>
     <string name="widget_preview_name_1">Water plants</string>
-    <string name="widget_preview_due_1">due 2d ago</string>
+    <string name="widget_preview_due_1">2d late</string>
     <string name="widget_preview_name_2">Change bed sheets</string>
-    <string name="widget_preview_due_2">due today</string>
+    <string name="widget_preview_due_2">today</string>
     <string name="widget_preview_name_3">Clean fridge</string>
-    <string name="widget_preview_due_3">due in 1w 5d</string>
+    <string name="widget_preview_due_3">in 12d</string>
 
     <!-- Settings -->
     <string name="action_settings">Settings</string>

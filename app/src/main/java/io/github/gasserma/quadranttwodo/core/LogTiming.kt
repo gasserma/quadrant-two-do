@@ -5,7 +5,7 @@ import java.time.temporal.ChronoUnit
 
 /**
  * How a log entry relates to the one before it: the first entry is the baseline; after that the
- * gap since the previous entry is compared with the period ("on schedule", "2d late", "1d early").
+ * gap since the previous entry is compared with the period ("on schedule", "2 days late", "1 day early").
  */
 sealed interface LogTiming {
     data object Baseline : LogTiming

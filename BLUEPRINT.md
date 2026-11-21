@@ -85,12 +85,12 @@ create table tasktags (             -- not used by the app; kept for backup comp
 
 ### Day counts
 
-Every number of days is shown as years (365 days), weeks and days, leaving out zero parts:
-401 days is **1y 5w 1d**, 14 days is **2w**, 3 days is **3d**.
+Every number of days is shown as plain days: **401 days**, **1 day**. Only the period dialog
+splits a period into years (365 days), weeks and days, to make long periods easy to enter.
 
-- Due text: "due today", "due tomorrow", "due yesterday", "due in 1w 2d", "due 46w ago".
+- Due text: "due today", "due tomorrow", "due yesterday", "due in 9 days", "due 322 days ago".
 - Log timing, for each entry compared with the one before it: "baseline" (the first entry),
-  "on schedule", "2d late", "1d early". An entry without a readable date (possible only in imported
+  "on schedule", "2 days late", "1 day early". An entry without a readable date (possible only in imported
   data) shows no timing and is skipped when comparing the others.
 
 ### Colours
@@ -175,9 +175,10 @@ Every change is saved straight away.
 
 ### Widget
 
-A scrolling list of every task, sorted like the app: name on the left, due text on the right in its
-urgency colour, on a panel of the app's background at the opacity chosen in Settings. It follows the
-theme setting (with System, the launcher picks light or dark colours itself).
+A scrolling list of every task, sorted like the app: name on the left, a short due text on the right
+("2d late", "today", "tomorrow", "in 29d") in its urgency colour, on a panel of the app's background
+at the opacity chosen in Settings.
+It follows the theme setting (with System, the launcher picks light or dark colours itself).
 
 Like the system's own widgets (Calendar, Gmail), the panel fills all the space the launcher gives
 it, with the system's widget corner radius on Android 12+, so it lines up with widgets beside it.
@@ -237,7 +238,7 @@ refreshes). minSdk 26, targetSdk 36. Package `io.github.gasserma.quadranttwodo`.
   rules, backup round trips and merging, the screens' main flows, the period boxes, and the widget.
 - **Sample data:** a real backup file, `regularly.db` (22 tasks, 7,188 log entries, 2016-03-29 to
   2025-12-30; no tags, notes or period-0 tasks). As of 2026-11-18 08:48 the four daily tasks (Floss,
-  Gym, Stick to Cut and Record, Gratitude) top the list at urgency ≈ 322.12 ("due 46w ago"), and Clean
+  Gym, Stick to Cut and Record, Gratitude) top the list at urgency ≈ 322.12 ("due 322 days ago"), and Clean
   Grill (365 days, due 2026-11-27) is last at ≈ −0.02.
 - **Robolectric quirk:** text fields inside a dialog window never let Compose go idle, so dialog
   contents are tested on their own (see `PeriodFields`).

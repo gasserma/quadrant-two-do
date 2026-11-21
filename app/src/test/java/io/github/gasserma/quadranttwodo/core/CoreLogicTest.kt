@@ -202,16 +202,11 @@ class CoreLogicTest {
 
     // wording
 
-    @Test fun dayCounts_showAsYearsWeeksDays() {
-        assertThat(formatDays(401)).isEqualTo("1y 5w 1d")
-        assertThat(formatDays(365)).isEqualTo("1y")
-        assertThat(formatDays(366)).isEqualTo("1y 1d")
-        assertThat(formatDays(372)).isEqualTo("1y 1w")
-        assertThat(formatDays(322)).isEqualTo("46w")
-        assertThat(formatDays(9)).isEqualTo("1w 2d")
-        assertThat(formatDays(3)).isEqualTo("3d")
-        assertThat(formatDays(0)).isEqualTo("0d")
-        assertThat(formatDays(1095)).isEqualTo("3y")
+    @Test fun dayCounts_showAsPlainDays() {
+        assertThat(formatDays(401)).isEqualTo("401 days")
+        assertThat(formatDays(9)).isEqualTo("9 days")
+        assertThat(formatDays(1)).isEqualTo("1 day")
+        assertThat(formatDays(0)).isEqualTo("0 days")
     }
 
     @Test fun yearsWeeksDays_roundTrips() {
@@ -226,11 +221,11 @@ class CoreLogicTest {
         assertThat(due("2026-05-31")).isEqualTo("due today")
         assertThat(due("2026-06-01")).isEqualTo("due tomorrow")
         assertThat(due("2026-05-30")).isEqualTo("due yesterday")
-        assertThat(due("2026-06-01", period = 9)).isEqualTo("due in 1w 2d")
-        assertThat(due("2026-05-26")).isEqualTo("due 5d ago")
-        assertThat(due("2025-04-25")).isEqualTo("due 1y 5w 1d ago") // due 2025-04-26: 401 days overdue
+        assertThat(due("2026-06-01", period = 9)).isEqualTo("due in 9 days")
+        assertThat(due("2026-05-26")).isEqualTo("due 5 days ago")
+        assertThat(due("2025-04-25")).isEqualTo("due 401 days ago") // due 2025-04-26: 401 days overdue
         // Never done: due one period after creation.
-        assertThat(task(period = 7, created = "2026-05-30").dueLabel(today)).isEqualTo("due in 5d")
+        assertThat(task(period = 7, created = "2026-05-30").dueLabel(today)).isEqualTo("due in 5 days")
         // No due date at all (legacy data): no label.
         assertThat(task(created = null).dueLabel(today)).isEmpty()
     }
@@ -238,17 +233,17 @@ class CoreLogicTest {
     @Test fun logTiming_regular() {
         val dates = listOf("2026-01-15", "2026-01-01", "2026-01-08", "2026-01-24").map(::d)
         assertThat(logTimings(dates, 7).map { it.format() })
-            .containsExactly("on schedule", "baseline", "on schedule", "2d late").inOrder()
+            .containsExactly("on schedule", "baseline", "on schedule", "2 days late").inOrder()
         assertThat(logTimings(listOf(d("2026-01-01"), d("2026-01-05")), 7).map { it.format() })
-            .containsExactly("baseline", "3d early").inOrder()
+            .containsExactly("baseline", "3 days early").inOrder()
         assertThat(logTimings(listOf(d("2026-01-01"), d("2026-03-01")), 7).map { it.format() })
-            .containsExactly("baseline", "7w 3d late").inOrder()
+            .containsExactly("baseline", "52 days late").inOrder()
     }
 
     @Test fun logTiming_sameDayEntriesAreEarly() {
         val dates = listOf("2026-01-01", "2026-01-01").map(::d)
         assertThat(logTimings(dates, 1).map { it.format() })
-            .containsExactly("baseline", "1d early").inOrder()
+            .containsExactly("baseline", "1 day early").inOrder()
     }
 
     @Test fun logTiming_undatedEntriesAreSkipped() {

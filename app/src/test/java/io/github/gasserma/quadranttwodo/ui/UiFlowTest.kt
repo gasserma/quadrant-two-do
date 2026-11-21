@@ -54,8 +54,8 @@ class UiFlowTest {
         val a = repo.createTask("Alpha", 1, null, "")
         repo.addLogEntry(a, LocalDate.parse("2026-11-16")) // due 11-17 → overdue
         val b = repo.createTask("Bravo", 7, null, "")
-        repo.addLogEntry(b, today) // due in 1w
-        val c = repo.createTask("Charlie", 30, null, "") // never done: due 30 days (4w 2d) after creation
+        repo.addLogEntry(b, today) // due in 7 days
+        val c = repo.createTask("Charlie", 30, null, "") // never done: due 30 days after creation
         mapOf("Alpha" to a, "Bravo" to b, "Charlie" to c)
     }
 
@@ -79,8 +79,8 @@ class UiFlowTest {
         start()
         waitFor("task:Alpha")
         rule.onNodeWithText("due yesterday").assertIsDisplayed()
-        rule.onNodeWithText("due in 1w").assertIsDisplayed()
-        rule.onNodeWithText("due in 4w 2d").assertIsDisplayed()
+        rule.onNodeWithText("due in 7 days").assertIsDisplayed()
+        rule.onNodeWithText("due in 30 days").assertIsDisplayed()
         assertThat(y("task:Alpha")).isLessThan(y("task:Bravo"))
         assertThat(y("task:Bravo")).isLessThan(y("task:Charlie"))
     }
@@ -136,8 +136,8 @@ class UiFlowTest {
         // ...and no history yet: no Last done, no Log.
         assertThat(rule.onAllNodes(hasTestTag("lastDoneField")).fetchSemanticsNodes()).isEmpty()
         assertThat(rule.onAllNodes(hasTestTag("addLog")).fetchSemanticsNodes()).isEmpty()
-        // The default period is 7 days, shown as weeks.
-        rule.onNodeWithTag("periodField").assertTextContains("1w", substring = true)
+        // The default period is 7 days, shown in days.
+        rule.onNodeWithTag("periodField").assertTextContains("7 days", substring = true)
 
         rule.onNodeWithTag("back").performClick()
         waitFor("task:Water plants")

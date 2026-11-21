@@ -25,17 +25,28 @@ class WidgetTest {
         val rows = buildWidgetRows(backupTasks, BLUEPRINT_NOW)
         assertThat(rows).hasSize(22)
         assertThat(rows.take(3).map { it.name }).containsExactly("Floss", "Gym", "Stick to Cut and Record").inOrder()
-        assertThat(rows.first().dueText).isEqualTo("due 46w ago")
+        assertThat(rows.first().dueText).isEqualTo("322d late")
         assertThat(rows.first().urgency!!).isWithin(0.01).of(322.12) // long overdue: coral
         assertThat(rows.last().name).isEqualTo("Clean Grill")
-        assertThat(rows.last().dueText).isEqualTo("due in 1w 2d")
+        assertThat(rows.last().dueText).isEqualTo("in 9d")
     }
 
     @Test fun neverDoneTaskIsDueOnePeriodAfterCreation() {
         val today = BLUEPRINT_NOW.toLocalDate()
         val tasks = listOf(Task(1, "New", 7, created = today.minusDays(2)))
         val rows = buildWidgetRows(tasks, BLUEPRINT_NOW)
-        assertThat(rows.single().dueText).isEqualTo("due in 5d")
+        assertThat(rows.single().dueText).isEqualTo("in 5d")
+    }
+
+    @Test fun shortDueWording() {
+        val today = BLUEPRINT_NOW.toLocalDate()
+        fun label(dueInDays: Long) = Task(1, "T", 7, firstDue = today.plusDays(dueInDays)).shortDueLabel(today)
+        assertThat(label(0)).isEqualTo("today")
+        assertThat(label(1)).isEqualTo("tomorrow")
+        assertThat(label(29)).isEqualTo("in 29d")
+        assertThat(label(-1)).isEqualTo("1d late")
+        assertThat(label(-109)).isEqualTo("109d late")
+        assertThat(Task(1, "T", 7, created = null).shortDueLabel(today)).isEmpty()
     }
 
     @Test fun dailyRefreshAimsJustAfterSix() {
@@ -51,7 +62,7 @@ class WidgetTest {
         provideComposable { WidgetContent(rows.take(5), "No tasks yet") }
         onNode(hasTestTag("row:Floss")).assertExists()
         onNode(hasText("Floss")).assertExists()
-        onAllNodes(hasText("due 46w ago")).assertCountEquals(4) // Floss, Gym, Stick to Cut, Gratitude
+        onAllNodes(hasText("322d late")).assertCountEquals(4) // Floss, Gym, Stick to Cut, Gratitude
     }
 
     @Test fun rendersEmptyText() = runGlanceAppWidgetUnitTest {
